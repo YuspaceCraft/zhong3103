@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848  # nacos地址
+        username: nacos
+        password: nacos  # 登录nacos用的用户名和密码
+        namespace: @env@
+        group: cloud-study  # 在一个组下
+        prefix: qf-jifen
+        file-extension: yml
+        shared-configs[0]:
+          data-id: common.yml
+          group: cloud-study
+          refresh: true
+  profiles:
+    active: @env@
