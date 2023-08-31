@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+        namespace: dev
+        group: cloud-study
+        prefix: ldu-order
+        file-extension: yml
+        shared-configs[0]:
+          data-id: common.yml
+          group: cloud-study
+          refresh: true
+  profiles:
+    active: dev
