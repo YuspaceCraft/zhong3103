@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { reqgetcom } from '../utils/request.js'
+import { reqgetcom,reqaddbrowse } from '../utils/request.js'
 import { reqfuzzySearch } from '../utils/request.js'
 export default {
   mounted(){
@@ -39,6 +39,9 @@ export default {
   methods: {
     openCominfoPage(index, item){
       //console.log(`Clicked item ${index + 1}:`, item);
+      reqaddbrowse(item.id,item.label,item.price,item.soldnum,item.description).then((res)=>{
+            console.log(res);
+        })
       this.$router.push({name: 'GoodsInfo',params: {params: item}});
     },
     fuzzysearch(){

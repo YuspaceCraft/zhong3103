@@ -27,7 +27,7 @@
 <script>
 import { reqaddtocart } from '../utils/request.js'
 import { reqgetuser } from '../utils/request.js'
-import { reqbuything } from '../utils/request.js'
+import { reqbuything,reqaddorder1 } from '../utils/request.js'
 export default {
   data(){
     return{
@@ -35,6 +35,9 @@ export default {
       num: 1,
       account: 888,
       arr: [],
+      date: '2023-9-2',
+      comment: '暂未评论',
+      address1: '山东省烟台市鲁东大学北区',
     }
   },
   methods: {
@@ -70,7 +73,7 @@ export default {
       });
     },
     return1(){
-      this.$router.go(-1);
+      this.$router.push({name: 'Home',params: {params: this.arr}});
     },
     calculate1(){
       const afford = this.account-this.num*this.receivedParam.price;
@@ -90,6 +93,10 @@ export default {
           reqbuything(this.account-this.num*this.receivedParam.price).then((res)=>{
             console.log("purchase-success!!!");
           })
+          reqaddorder1(this.receivedParam.id+999,this.date,
+          this.receivedParam.label,this.address1,this.num,this.receivedParam.price,this.comment).then((res)=>{
+            console.log("addorder-success!!!");
+          })
         }, 2000);
         
       }
@@ -106,6 +113,7 @@ export default {
   mounted(){
     reqgetuser().then((res)=>{ 
         this.account = res.data[0].account;
+        this.arr = res.data;
         //console.log(this.account);
       })
   },

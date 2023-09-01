@@ -58,9 +58,10 @@
 <script>
 import { reqgetorders } from '../utils/request.js'
 import { requpdatecart } from '../utils/request.js'
+import { reqfindBycommId } from '../utils/request.js'
 import { reqdeletecart } from '../utils/request.js'
 import { reqgetuser } from '../utils/request.js'
-import { reqbuything } from '../utils/request.js'
+import { reqbuything,reqaddorder1 } from '../utils/request.js'
 export default {
   mounted(){
       reqgetorders().then((res)=>{
@@ -86,6 +87,9 @@ export default {
         pageEnd: 5,
         currentPage: 1,
         pageSize: 4,
+        date: '2023-9-2',
+        comment: '暂未评论',
+        address1: '山东省烟台市鲁东大学北区',
     }
   },
   methods: {
@@ -149,8 +153,15 @@ export default {
           background: 'rgba(0, 0, 0, 0.7)'
           });
           for(let i=0; i<this.deletearr.length; i++){
+            reqfindBycommId(this.deletearr[i]).then((res)=>{
+              console.log(res.data);
+              reqaddorder1(res.data[0].id+999,this.date,res.data[0].label,this.address1,1,res.data[0].price,this.comment).then((res)=>{
+              console.log("addorder-success!!!");
+              })
+            })
+            
             reqdeletecart(this.deletearr[i]).then((res)=>{
-                  console.log("purchase-success");
+              console.log("purchase-success");
             })
           }
           setTimeout(() => {

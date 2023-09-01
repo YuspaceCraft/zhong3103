@@ -33,18 +33,21 @@
 </template>
 <script>
 import { reqgetuser } from '../utils/request.js'
+import { reqlogin } from '../utils/request.js'
 export default {
     mounted(){
       reqgetuser().then((res)=>{
         //console.log(res.data);
         this.arr = res.data;
       })
+      
     },
     methods: {
       goregister(){
         this.$router.push('/register');
       },
       onSubmit(){
+        console.log(this.value);
         const loading = this.$loading({
           lock: true,
           text: 'Loading',
@@ -61,7 +64,18 @@ export default {
         setTimeout(() => {
               loading.close();
               if(flag){
-                this.$router.push({name: 'Home',params: {params: this.arr}});
+                if(this.value=="选项1"){
+                  this.$router.push({name: 'Home',params: {params: this.arr}});
+                }
+                else if(this.value=="选项2"){
+                  reqlogin(this.formLabelAlign.name,this.formLabelAlign.password).then((res) => {
+                    console.log(res);
+                  });
+                  this.$router.push({name: 'MainPage',params: {params: this.arr}});
+                }
+                else if(this.value=="选项3"){
+                  this.$router.push({name: 'LslHome',params: {params: this.arr}});
+                }
                 this.$message({
                   message: '登录成功',
                   type: 'success'

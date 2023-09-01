@@ -12,6 +12,19 @@ import User from '@/components/User'
 import CommentPage from '@/components/CommentPage'
 import Comment from '@/components/Comment'
 
+//lsl
+import LslGoodsItem from '@/components/LslGoodsItem'
+import LslOrder from '@/components/LslOrder'
+import LslGoodsadd from '@/components/LslGoodsadd'
+import LslComment from '@/components/LslComment'
+import LslHome from '@/components/LslHome'
+import LslUser from '@/components/LslUser'
+
+import MainPage from '@/components/MainPage'
+import ZrzOrder from '@/components/ZrzOrder'
+import Note from '@/components/Note';
+import Seting from '@/components/Seting';
+import OrdertoComment1 from '@/components/OrdertoComment1'
 
 Vue.use(Router)
 
@@ -76,6 +89,57 @@ export default new Router({
       name: 'GoodsInfo',
       component: GoodsInfo
     },
-    
+    //lsl
+    {
+      path: '/lslhome',
+      name: 'LslHome',
+      component: LslHome,
+      children: [
+        {
+          path: '/lslgoodsitem',
+          component: LslGoodsItem
+        }, 
+        {
+          path: '/lslorder',
+          component: LslOrder
+        }, 
+        {
+          path: '/lslgoodsadd',
+          component: LslGoodsadd
+        }, 
+        {
+          path: '/lsluser',
+          component: LslUser
+        }, 
+        {
+          path: '/lslcomment',
+          component: LslComment
+        },
+      ]
+    },
+    //zrz
+    {
+      path: '/mainpage',
+      name: 'MainPage',
+      component: MainPage,
+      children: [
+        {
+          path: '/note',
+          component: Note
+        },
+        {
+          path: '/zrzorder',
+          component: ZrzOrder
+        },
+        {
+          path: '/seting',
+          component: Seting
+        },  
+        {
+          path: '/ordertocomment1',
+          component: OrdertoComment1
+        },   
+      ],
+    },
   ]
 })
