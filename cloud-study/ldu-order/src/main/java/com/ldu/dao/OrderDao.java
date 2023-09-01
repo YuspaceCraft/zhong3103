@@ -15,4 +15,10 @@ public interface OrderDao {
     int addtocart(int id, String img, String label, Double price, int num);
 
     int deleteorder(int id);
+
+    List<Orders> findorderByConditions(String label);
+    int deleteorders(String id);
+    int updatesend(String id);
+
+
 }

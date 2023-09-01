@@ -12,4 +12,8 @@ public interface CommentDao {
     int addcomment(int id, String username, String comments);
 
     List<Comment> Fuzzyfind(String str);
+
+    int deleteComment(String cid);
+
+    int updatecomment(String username,String comments,int cid);
 }

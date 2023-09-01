@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
-    public int id;
+public class Browse {
+    public Integer id;
     public String label;
-    public Double price;
-    public String img;
-    public int amount;
-    public String  user;
-    public  String issend;
+    public String price;
+    public int soldnum;
+    public String description;
 }

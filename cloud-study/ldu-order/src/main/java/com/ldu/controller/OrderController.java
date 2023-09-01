@@ -59,6 +59,38 @@ public class OrderController {
         return "Success!";
     }
 
+    @RequestMapping("/allorders")
+    public List<Orders> allorders(){
+        return orderDao.findAll();
+    }
+
+    @RequestMapping("/findorders")
+    public List<Orders> findorders(@RequestParam("label") String label){
+        List<Orders> orderlist = orderDao.findorderByConditions(label);
+        System.out.println(orderlist);
+        return orderlist;
+    }
+    @RequestMapping("/delorders")
+    public List<Orders>  delorders(@RequestParam("id") String id ){
+        orderDao.deleteorders(id);
+        List<Orders> orderlist = orderDao.findAll();
+        return orderlist;
+
+    }
+    @RequestMapping("/updatesend")
+    public List<Orders> updatesend(@RequestParam("id") String id){
+        orderDao.updatesend(id);
+        List<Orders> orderlist = orderDao.findAll();
+        return orderlist;
+    }
+
+
+
+
+
+
+
+
     @RequestMapping("/sendmsg")
     public int sendmsg(){
         return orderDao.deleteorder(12);

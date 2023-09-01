@@ -30,5 +30,41 @@ public class CommodityDaoImpl implements CommodityDao {
         RowMapper<Commodity> rowMapper = new BeanPropertyRowMapper<Commodity>(Commodity.class);
         return this.jdbcTemplate.query(sql, rowMapper);
     }
+    @Override
+    public List<Commodity> findBycommId(int id){
+        String sql = "select * from commodity where id="+id;
+        RowMapper<Commodity> rowMapper;
+        rowMapper = new BeanPropertyRowMapper<Commodity>(Commodity.class);
+        return this.jdbcTemplate.query(sql, rowMapper);
+    }
+
+
+    public List<Commodity> findByConditions(String label) {
+        String sql = "SELECT * FROM commodity WHERE " +
+                "label LIKE CONCAT('%', ?, '%') " ;
+        RowMapper<Commodity> rowMapper = new BeanPropertyRowMapper<>(Commodity.class);
+        return this.jdbcTemplate.query(sql, rowMapper,label);
+    }
+    @Override
+    public int updatecommodity(String label,String img,String price,String description,String id){
+        return jdbcTemplate.update("update commodity set label=? ," +
+                "img=? ," +
+                "price=? ," +
+                "description=?  " +
+                "where id=?",label, img, price,description,id);
+    }
+
+    @Override
+    public int insert(String label,String img,String price,String description) {
+        String sql = "insert into commodity(label,img,price,description,soldnum)" +
+                " value(?,?,?,?,'0')";
+
+        return jdbcTemplate.update(sql,label,img,price,description);
+    }
+
+    @Override
+    public int deleteCommodity(String id) {
+        return jdbcTemplate.update("delete from commodity where id = ?",id);
+    }
 
 }

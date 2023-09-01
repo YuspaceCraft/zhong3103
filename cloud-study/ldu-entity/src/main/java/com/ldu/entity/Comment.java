@@ -12,5 +12,6 @@ public class Comment {
     public Integer id;
     public String username;
     public String comments;
+    public int cid;
 }
 

@@ -49,4 +49,22 @@ public class OrderDaoImpl implements OrderDao {
         return jdbcTemplate.update(sql,id);
     }
 
+
+    @Override
+    public List<Orders> findorderByConditions(String label) {
+        String sql = "SELECT * FROM orders WHERE " +
+                "label LIKE CONCAT('%', ?, '%') " ;
+        RowMapper<Orders> rowMapper = new BeanPropertyRowMapper<>(Orders.class);
+        return this.jdbcTemplate.query(sql, rowMapper,label);
+    }
+    @Override
+    public int deleteorders(String id) {
+        return jdbcTemplate.update("delete from orders where id = ?",id);
+
+    }
+    @Override
+    public int updatesend(String id){
+        return jdbcTemplate.update("update orders set issend = '是' where id=?",id);
+    }
+
 }

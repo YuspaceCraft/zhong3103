@@ -34,6 +34,61 @@ public class CommmdityController {
         return all;
     }
 
+    @RequestMapping("/allcommodity")
+    public List<Commodity> allcommodity(){
+        return commodityDao.findAll();
+    }
+
+    @RequestMapping("/findBycommId")
+    public List<Commodity> findBycommId(@RequestParam("id") int id){
+        List<Commodity> commoditylist = commodityDao.findBycommId(id);
+        return commoditylist;
+    }
+
+    @GetMapping("/findCommodity")
+    public List<Commodity> findCommodity(@RequestParam("label") String label){
+        List<Commodity> commoditylist = commodityDao.findByConditions(label);
+        return commoditylist;
+    }
+    @GetMapping("/updateCommodity")
+    public List<Commodity> updateCommodity(@RequestParam("label") String label,
+                                           @RequestParam("img") String img,
+                                           @RequestParam("price") String price,
+                                           @RequestParam("description") String description,
+                                           @RequestParam("id") String id){
+        int flag = commodityDao.updatecommodity(label,img,price,description,id);
+        List<Commodity> commodityList = commodityDao.findAll();
+        System.out.println(commodityList);
+        System.out.println(flag);
+        return commodityList;
+
+    }
+    @GetMapping("/addCommodity")
+    public List<Commodity>  addCommodity(
+            @RequestParam("label") String label,
+            @RequestParam("img") String img,
+            @RequestParam("price") String price,
+            @RequestParam("description") String description){
+        commodityDao.insert(label,img,price,description);
+        List<Commodity> commodityList = commodityDao.findAll();
+        return commodityList;
+    }
+    @GetMapping("/delCommodity")
+    public List<Commodity> delCommodity(@RequestParam("id") String id){
+        commodityDao.deleteCommodity(id);
+        List<Commodity> commodityList = commodityDao.findAll();
+        return commodityList;
+
+
+    }
+
+
+
+
+
+
+
+
     @RequestMapping("/detail/{id}")
     public Commodity detail(@PathVariable int id){
         return new Commodity(id,2,"牛仔裤","23sd",19.99,"便宜卖");

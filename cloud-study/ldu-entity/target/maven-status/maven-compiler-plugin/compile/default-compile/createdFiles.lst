@@ -1,4 +1,6 @@
-com\ldu\entity\Comment.class
-com\ldu\entity\Commodity.class
+com\ldu\entity\Browse.class
 com\ldu\entity\Orders.class
+com\ldu\entity\Comment.class
+com\ldu\entity\Order1.class
+com\ldu\entity\Commodity.class
 com\ldu\entity\Jifen.class

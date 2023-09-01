@@ -2,15 +2,16 @@ package com.ldu.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.ldu.config.SentinelFallback;
+import com.ldu.dao.BrowseDao;
 import com.ldu.dao.CommentDao;
+import com.ldu.dao.OrderDao;
 import com.ldu.dao.UserDao;
-import com.ldu.entity.Comment;
-import com.ldu.entity.Jifen;
-import com.ldu.entity.User;
+import com.ldu.entity.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,13 @@ public class JifenController {
     UserDao userDao;
     @Autowired
     CommentDao commentDao;
+    @Autowired
+    private BrowseDao browseDao;
+    @Autowired
+    private OrderDao orderDao;
+
+    private int uid;
+    private String uname;
 
     @RequestMapping("/getuser")
     public List<User> getuser(){
@@ -41,6 +49,45 @@ public class JifenController {
             , @RequestParam("account") Double account, @RequestParam("email") String email
             , @RequestParam("address") String address) {
         return userDao.adduser(2,username,password,location,phone,account,email,address);
+    }
+
+    //lsl
+    @RequestMapping("/allUser")
+    public List<User> allUser() {
+        return userDao.findAll();
+    } // 在写之前可以先去父类HttpController先去查找一下，看有没有类似的代码
+
+    @GetMapping("/finduserByConditions")
+    public List<User> finduserByConditions(@RequestParam("username") String username,
+                                           @RequestParam("phone") String phone,
+                                           @RequestParam("email") String email,
+                                           @RequestParam("location") String location,
+                                           @RequestParam("address") String address){
+        List<User> userlist = userDao.finduserByConditions(username,phone,email,location,address);
+        return userlist;
+
+    }
+    @GetMapping("/adduser")
+    public List<User>  addCommodity(@RequestParam("username") String username,
+                                    @RequestParam("password") String password,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("account") String account,
+                                    @RequestParam("email") String email,
+                                    @RequestParam("location") String location,
+                                    @RequestParam("address") String address){
+        userDao.insert(username,password,phone,
+                account,email,location,address);
+        List<User> userList = userDao.findAll();
+        return userList;
+    }
+
+    @GetMapping("/delUser")
+    public List<User> delUser(@RequestParam("id") String id){
+        userDao.deleteuser(id);
+        List<User> userList = userDao.findAll();
+        return userList;
+
+
     }
 
 //    @RequestMapping("/userlogin")
@@ -71,6 +118,122 @@ public class JifenController {
     public int addcomment(@RequestParam("id") int id,
                           @RequestParam("username") String username, @RequestParam("comments") String comments){
         return commentDao.addcomment(id,username,comments);
+    }
+
+    @RequestMapping("/addbrowse")
+    public int addbrowse(@RequestParam("id") int id,
+                          @RequestParam("label") String label, @RequestParam("price") Double price,
+                         @RequestParam("soldnum") int soldnum, @RequestParam("description") String description){
+        return browseDao.addbrowse(id,label,price,soldnum,description);
+    }
+
+    @RequestMapping("/addorder1")
+    public int addorder1(@RequestParam("orderid") int orderid,
+                         @RequestParam("date") String date, @RequestParam("name") String name,
+                         @RequestParam("address") String address, @RequestParam("num") int num,
+                         @RequestParam("price") Double price, @RequestParam("comment") String comment){
+        return orderDao.addorder1(orderid,date,name,address,num,price,comment);
+    }
+
+    //lsl
+    @RequestMapping("/deleteComment")
+    public List<Comment> deleteComment(@RequestParam("cid") String cid){
+        commentDao.deleteComment(cid);
+        return commentDao.findAll();
+    }
+    @GetMapping("/updateComment")
+    public List<Comment> updateComment(@RequestParam("username") String username,
+                                       @RequestParam("comments") String comments,
+                                       @RequestParam("cid") int cid){
+        commentDao.updatecomment(username, comments,cid);
+        return  commentDao.findAll();
+    }
+
+    //zrz
+    @GetMapping("/browse")
+    public List<Browse> getData(){
+        List<Browse> browse=browseDao.findAll();
+//        System.out.println(equipments);
+        return browse;
+    }
+    @GetMapping("/findall")
+    public List<Order1> getdata(){
+        List<Order1> orders=orderDao.findAll();
+//        System.out.println(equipments);
+        return orders;
+    }
+
+    @GetMapping("/dimfind")
+    public List<Order1> dimorders(@RequestParam("orders") String name){
+        List<Order1> orders= orderDao.findByStr(name);
+        System.out.println(orders);
+        return orders;
+    }
+
+    @GetMapping("/delete")
+    public Integer delete(@RequestParam("orderid") Integer id) throws IOException {
+        System.out.println("delete方法执行");
+        return orderDao.delete(id);
+    }
+
+    @RequestMapping(value = "/updatecomment", method = RequestMethod.GET)
+    public int update(@RequestParam("orderid") Integer id,@RequestParam("comment") String comment) {
+        System.out.println(id + "     " +comment);
+        System.out.println(comment.getClass());
+        Order1 order = orderDao.findById(id);
+
+        System.out.println(order.getComment());
+        order.setComment(comment);
+
+        System.out.println(order.getComment());
+        System.out.println("更改成功");
+        return orderDao.update(order);
+    }
+
+    @GetMapping("/finduser")
+    public User finduser(@RequestParam("id") Integer id){
+        User user = userDao.findById(id);
+        System.out.println(user);
+        return user;
+    }
+
+    @GetMapping("/updateuser1")
+    public int finduser(@RequestParam("id") Integer id,@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("age") Integer age,
+                        @RequestParam("phone") String phone,@RequestParam("address") String address){
+        User user = userDao.findById(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setAge(age);
+        user.setPhone(phone);
+        user.setAddress(address);
+        System.out.println(user);
+        return userDao.update(user);
+    }
+
+    @RequestMapping(value = "/loginverify", method = RequestMethod.GET)
+    public int login(@RequestParam("username") String username
+            ,@RequestParam("password") String password){
+        System.out.println(username +"  "+ password);
+        try{
+            User user = userDao.login(username,password);
+            uid=user.getId();
+            uname=username;
+            System.out.println(user.getId());
+            return user.getId();
+
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
+    @GetMapping("/returnid")
+    public int returnid(){
+        return uid;
+    }
+
+    @GetMapping("/returnname")
+    public String returnname(){
+        return uname;
     }
 
 

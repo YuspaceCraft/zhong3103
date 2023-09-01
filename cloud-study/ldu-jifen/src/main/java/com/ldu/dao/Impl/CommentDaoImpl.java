@@ -43,4 +43,17 @@ public class CommentDaoImpl implements CommentDao {
         RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<Comment>(Comment.class);
         return this.jdbcTemplate.query(sql, rowMapper);
     }
+
+
+    //lsl
+    @Override
+    public int deleteComment(String cid) {
+        return jdbcTemplate.update("delete from comment where cid = ?",cid);
+    }
+    @Override
+    public int updatecomment(String username,String comments,int cid){
+        return jdbcTemplate.update("update comment set username=? ," +
+                "comments=? " +
+                "where cid=?",username, comments,cid);
+    }
 }

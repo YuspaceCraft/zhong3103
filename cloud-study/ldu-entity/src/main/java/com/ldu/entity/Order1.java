@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
-    public int id;
-    public String label;
+public class Order1 {
+    public Integer orderid;
+    public String date;
+    public String name;
+    public String address;
+    public Integer num;
     public Double price;
-    public String img;
-    public int amount;
-    public String  user;
-    public  String issend;
+    public String comment;
 }
